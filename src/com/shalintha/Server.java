@@ -37,29 +37,22 @@ public class Server {
                 newUser.start();
             }
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public void addUser(String name){
         users.add(name);
     }
-
     public Set<String> getUsers() {
         return users;
     }
-
     public boolean getAUser(String name){
-        if(users.contains(name)){
+        if(users.contains(name))
             return true;
-        }
-        else{
+        else
             return false;
-        }
     }
-
     public void removeUser(String name, UserThreads userThread){
         users.remove(name);
         userThreads.remove(userThread);
@@ -69,7 +62,6 @@ public class Server {
     public boolean hasUsers(){
         return !this.users.isEmpty();
     }
-
     public void setUserThreads(UserThreads userThreads) {
         this.userThreads.add(userThreads);
     }

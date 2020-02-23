@@ -14,7 +14,6 @@ public class UserThreads extends Thread  {
         this.server=server;
     }
 
-
     public void run(){
         try {
             InputStream inputStream = socket.getInputStream();
@@ -45,7 +44,6 @@ public class UserThreads extends Thread  {
         }
 
     }
-
     public void getAllUsers(){
         if(server.hasUsers()){
             printWriter.println(server.getUsers());
