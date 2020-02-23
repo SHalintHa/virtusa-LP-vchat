@@ -1,7 +1,10 @@
 package com.shalintha;
 
+
+import javax.net.ssl.SSLServerSocketFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -13,7 +16,7 @@ public class Server {
     private Set<String> users = new HashSet<>();
     private Set<UserThreads> userThreads = new HashSet<>();
     private PrintWriter printWriter;
-
+    String serverIP;
 
     public Server(int port) {
         this.port = port;
@@ -21,11 +24,14 @@ public class Server {
 
     public void startServer(){
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Listening to port " + port);
+
+            ServerSocket serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(port);
+            serverIP = (InetAddress.getLocalHost().getHostAddress()).trim();
+//            ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("Server Started "+ serverIP + " on port " + port);
             while(true){
                 Socket socket = serverSocket.accept();
-                System.out.println("New User");
+                System.out.println("New User!");
                 UserThreads newUser = new UserThreads(socket, this);
                 userThreads.add(newUser);
                 newUser.start();
