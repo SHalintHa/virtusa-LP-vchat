@@ -40,7 +40,7 @@ public class Client {
             System.out.println("Enter ip: ");
             Scanner input = new Scanner(System.in);
             String in = input.nextLine();
-            sslSocket = (SSLSocket) SSLSocketFactory.getDefault().createSocket(in, 8191);
+            sslSocket = (SSLSocket) SSLSocketFactory.getDefault().createSocket(in, Integer.parseInt(serverPort));
 
             printWriter = new PrintWriter(sslSocket.getOutputStream(), true);
             printWriter.println(in);
