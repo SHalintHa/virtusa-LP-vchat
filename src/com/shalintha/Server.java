@@ -13,6 +13,8 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +22,7 @@ public class Server {
 
 
     private Scanner scanner;
-    private int port = 8080;
+    private static int port = 8080;
     static Map<String, ChatMessages> clients = new HashMap<>();
 
     static String serverIP;
@@ -30,14 +32,15 @@ public class Server {
         return inetAddress.getHostAddress().trim();
     }
 
-    private void start(){
+    public static void start(){
 
         try {
-            while (true){
-                HttpServer httpServer = HttpServer.create(new InetSocketAddress(port), 0);
-
-                httpServer.createContext("/test", Server::handler);
-            }
+            HttpServer httpServer = HttpServer.create(new InetSocketAddress(port), 0);
+            httpServer.createContext("/", Server::handler);
+            ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
+            httpServer.setExecutor(threadPoolExecutor);
+            httpServer.start();
+            System.out.println("Server Started.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +50,6 @@ public class Server {
         String response = "", request = "";
         Matcher matcher;
         Pattern pattern = Pattern.compile("(^[a-zA-Z]*\\b)=(.*)");
-        Matcher matcher1;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()));
 
         String input = bufferedReader.readLine();
@@ -92,7 +94,7 @@ public class Server {
                 else{
                     ChatMessages chatMessages;
                     if((chatMessages = clients.get(stringMap.get("to")))!=null){
-                        chatMessages.addMessage(stringMap.get("name") + " : " + stringMap.get("message") + "\n");
+                        chatMessages.addMessages(stringMap.get("name") + " : " + stringMap.get("message") + "\n");
                     }
                     else{
                         response = "User Not found ";
