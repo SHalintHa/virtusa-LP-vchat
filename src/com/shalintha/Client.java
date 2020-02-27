@@ -1,7 +1,5 @@
 package com.shalintha;
 
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -32,7 +30,7 @@ public class Client {
                 name = matcher.group(5);
                 POST_PARAMS = "name=" + matcher.group(5);
                 POST_URL = "http://" + matcher.group(2) + ":" + matcher.group(3);
-                sendPOST(POST_PARAMS);
+                sendPOSTReqest(POST_PARAMS);
                 isConnected = true;
             } else {
                 System.out.println("Invalid Command\n");
@@ -41,7 +39,7 @@ public class Client {
         }
 }
 
-    private static void sendPOST(String postParams) throws IOException {
+    private static void sendPOSTReqest(String postParams) throws IOException {
         URL obj = new URL(POST_URL);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setDoOutput(true);
@@ -50,7 +48,7 @@ public class Client {
         os.close();
 
         int responseCode = con.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) { //success
+        if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     con.getInputStream()));
             String inputLine;
@@ -63,28 +61,12 @@ public class Client {
 
             if (response.toString().length() > 0) {
                 System.out.println(response.toString().replace(",", "\n"));
-                if ("[Server] : Invalid client name".equals(response.toString())) {
+                if ("User not found".equals(response.toString())) {
                     connectToServer();
                 }
             }
         } else {
-            System.out.println("Invalid POST request");
+            System.out.println("Invalid request");
         }
-    }
-
-    private static void startResponseListener() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        Thread.sleep(5000);
-                        sendPOST("name=" + name + ",console=check");
-                    }
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 }
