@@ -1,9 +1,13 @@
 package com.shalintha;
 
+import java.util.ArrayList;
+
 public class Message {
 
     private String message;
     private boolean isSend;
+
+    public Message(){   }
 
     public Message(String message, boolean isSend) {
         this.message = message;
@@ -24,5 +28,15 @@ public class Message {
 
     public void setSend(boolean send) {
         isSend = send;
+    }
+
+    ArrayList<Message> messages = new ArrayList<>();
+
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+
+    public void addMessages(String message) {
+        messages.add(new Message(message, false));
     }
 }

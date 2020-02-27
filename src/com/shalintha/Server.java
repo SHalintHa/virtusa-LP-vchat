@@ -23,7 +23,7 @@ public class Server {
 
     private Scanner scanner;
     private static int port = 8080;
-    static Map<String, ChatMessages> clients = new HashMap<>();
+    static Map<String, Message> clients = new HashMap<>();
 
     static String serverIP;
     static InetAddress inetAddress;
@@ -37,7 +37,7 @@ public class Server {
         try {
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(port), 0);
             httpServer.createContext("/", Server::handler);
-            ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
+            ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
             httpServer.setExecutor(threadPoolExecutor);
             httpServer.start();
             System.out.println("Server Started.");
@@ -69,7 +69,7 @@ public class Server {
         }
 
         if(clients.get(stringMap.get("name"))==null){
-            clients.put(stringMap.get("name"), new ChatMessages());
+            clients.put(stringMap.get("name"), new Message());
             System.out.println("New User " + stringMap.get("name"));
             response = "Connected to Server";
         }
@@ -92,7 +92,7 @@ public class Server {
                     response="User not found";
                 }
                 else{
-                    ChatMessages chatMessages;
+                    Message chatMessages;
                     if((chatMessages = clients.get(stringMap.get("to")))!=null){
                         chatMessages.addMessages(stringMap.get("name") + " : " + stringMap.get("message") + "\n");
                     }
