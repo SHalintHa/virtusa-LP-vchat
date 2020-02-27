@@ -20,17 +20,10 @@ import java.util.regex.Pattern;
 
 public class Server {
 
-
-    private Scanner scanner;
     private static int port = 8080;
     static Map<String, Message> clients = new HashMap<>();
 
-    static String serverIP;
     static InetAddress inetAddress;
-
-    public static String getServerIP(){
-        return inetAddress.getHostAddress().trim();
-    }
 
     public static void start(){
 
