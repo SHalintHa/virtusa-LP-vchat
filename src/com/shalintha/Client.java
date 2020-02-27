@@ -16,11 +16,8 @@ public class Client {
     private static Matcher matcher;
 
     public static void connectToServer() throws IOException {
-
         boolean isConnected = false;
-
         Scanner scanner = new Scanner(System.in);
-
         while (!isConnected) {
             text = scanner.nextLine();
             pattern = Pattern.compile("(^connect)\\s(\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b):(\\b\\d{4}\\b)\\s(\\bas\\b)\\s(\\b[A-Za-z]{3,15})$");
@@ -35,7 +32,6 @@ public class Client {
             } else {
                 System.out.println("Invalid Command\n");
             }
-
         }
 }
 
