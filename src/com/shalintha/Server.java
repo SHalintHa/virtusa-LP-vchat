@@ -69,7 +69,7 @@ public class Server {
         else{
             if ("list".equals(stringMap.get("console"))){
                 for(Map.Entry<String, String> entry : stringMap.entrySet()){
-                    if(entry.getKey().toLowerCase().equals(stringMap.get("name").toLowerCase())){
+                    if(entry.getKey().equals(stringMap.get("name"))){
                         response += entry.getKey() + "[you]"+"\n";
                     }
                     else{
